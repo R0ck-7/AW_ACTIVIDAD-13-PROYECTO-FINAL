@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Sabores de México</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/miStyle.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#"><strong>Sabores de México</strong></a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagina de registro.html">registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagina de recetas.html">recetas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Pagina de administracion.html" id="admin-link">Administrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()" id="logout-link">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <h1>Sabores de México</h1>
+        <p>Recetas auténticas de la cocina mexicana</p>
+    </header>
+    <div class="container">
+        <section class="full-width">
+            <div class="user-info">
+                <h2>Panel de Administración</h2>
+                <p id="welcome-user">Bienvenido, <span id="current-user"></span></p>
+            </div>
+            <div id="not-logged-message" class="message error hidden">
+                <p>Debes iniciar sesión para acceder a esta página. <a href="login.html">Iniciar sesión</a></p>
+            </div>
+            <div id="admin-content" class="hidden">
+                <div class="admin-actions">
+                    <h3>Gestión de Recetas</h3>
+                    <div class="form-section">
+                        <h4>Agregar Nueva Receta</h4>
+                        <form id="recipe-form">
+                            <input type="hidden" id="recipe-id">
+                            <label for="recipe-name">Nombre de la receta:</label>
+                            <input type="text" id="recipe-name" required>
+                            <label for="recipe-category">Categoría:</label>
+                            <select id="recipe-category" required>
+                                <option value="entrada">Entrada</option>
+                                <option value="plato-fuerte">Plato Fuerte</option>
+                                <option value="postre">Postre</option>
+                                <option value="bebida">Bebida</option>
+                            </select>
+                            <label for="recipe-ingredients">Ingredientes:</label>
+                            <textarea id="recipe-ingredients" placeholder="Lista los ingredientes separados por comas" required></textarea>
+                            <label for="recipe-instructions">Instrucciones:</label>
+                            <textarea id="recipe-instructions" placeholder="Describe los pasos para preparar la receta" required></textarea>
+                            <label for="recipe-image">URL de la imagen:</label>
+                            <input type="text" id="recipe-image" placeholder="Opcional">
+                            <button type="submit" id="save-recipe-btn">Guardar Receta</button>
+                            <button type="button" id="cancel-edit-btn" class="btn-secondary hidden">Cancelar</button>
+                        </form>
+                    </div>
+                    <div class="recipes-management">
+                        <h4>Mis Recetas</h4>
+                        <div id="admin-recipes-list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>Sabores de México</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="js/script.JS"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoggedInUser();
+            if (!currentUser) {
+                document.getElementById('not-logged-message').classList.remove('hidden');
+                document.getElementById('admin-content').classList.add('hidden');
+                return;
+            }
+            document.getElementById('not-logged-message').classList.add('hidden');
+            document.getElementById('admin-content').classList.remove('hidden');
+            updateUIForLoggedInUser();
+            document.getElementById('recipe-form').addEventListener('submit', handleRecipeSubmit);
+            document.getElementById('cancel-edit-btn').addEventListener('click', cancelEdit);
+            loadAdminRecipes();
+        });
+    </script>
+</body>
+</html>
